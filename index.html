@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta name="mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+
+    <link rel="stylesheet" type="text/css" href="normalize.css"/>
+    <link rel="stylesheet" type="text/css" href="KenKen.css"/>
+
+    <title>KenKen Solver</title>
+</head>
+<body>
+<select id="selectGridSize">
+    <option value="3">3x3</option>
+    <option value="4">4x4</option>
+    <option value="5">5x5</option>
+    <option value="6">6x6</option>
+    <option value="7">7x7</option>
+    <option value="8">8x8</option>
+    <option value="9">9x9</option>
+</select>
+
+<div id="KenKenGrid"></div>
+
+<script src="jquery-3.4.1.min.js"></script>
+<script src="Model.js"></script>
+<script src="View.js"></script>
+<script src="Controller.js"></script>
+</body>
+</html>

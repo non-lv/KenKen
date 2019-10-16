@@ -1,0 +1,45 @@
+#KenKenGrid{
+    display: block;
+    margin: auto;
+    border: black 3px solid;
+}
+
+.gridRow{
+    width: 100%;
+}
+
+.gridCell{
+    position: relative;
+    border: black 1px solid;
+    float: left;
+}
+
+.hint{
+    position: fixed;
+    padding: 3px;
+    font-family: monospace;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.number{
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: monospace;
+    font-size: 5rem;
+}
+
+.note{
+    position: absolute;
+    width:100%;
+    text-align: center;
+    top:50%;
+    transform: translateY(-50%);
+    font-family: monospace;
+    color: darkblue;
+    font-size: 2rem;
+    overflow-wrap: break-word;
+}
