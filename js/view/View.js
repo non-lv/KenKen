@@ -4,7 +4,9 @@ function View() {
     var gridSize = 75,
         gameSize = 0,
         grid = $("#KenKenGrid"),
-        gridCells = [];
+        gridCells = [],
+        activeCell,
+        activeMode = 0;
 
     this.init = function () {
         this.grid(model.getSize());
@@ -84,6 +86,7 @@ function View() {
         gridCells = $(".gridCell");
 
         this.setGridSize(gridSize);
+        this.setGridPress();
     };
 
     this.setGridSize = function (size) {
@@ -111,6 +114,10 @@ function View() {
             cell.innerText = number;
     };
 
+    this.hasNumber = function (x, y) {
+        return gridCells[y * model.getSize() + x].getElementsByClassName("number")[0] !== undefined;
+    };
+
     this.removeNumber = function (x, y) {
         var cell = gridCells[y * model.getSize() + x].getElementsByClassName("number")[0],
             note = gridCells[y * model.getSize() + x].getElementsByClassName("note")[0];
@@ -120,6 +127,15 @@ function View() {
                 note.style.display = "block";
             gridCells[y * model.getSize() + x].removeChild(cell);
         }
+    };
+
+    this.clearCell = function (x, y) {
+        var cell = gridCells[y * model.getSize() + x].getElementsByClassName("number")[0],
+            note = gridCells[y * model.getSize() + x].getElementsByClassName("note")[0];
+        if(cell !== undefined)
+            gridCells[y * model.getSize() + x].removeChild(cell);
+        if(note !== undefined)
+            gridCells[y * model.getSize() + x].removeChild(note);
     };
 
     this.setNote = function (x, y, number) {
@@ -177,5 +193,42 @@ function View() {
 
     this.onGridChange = function (f) {
         $("#selectGridSize")[0].addEventListener("change", f);
+    };
+
+    this.setGridPress = function () {
+        var f = function (i) {
+            activeCell = i;
+            view.removeHighlights();
+            view.highlightCell(i % view.getGameSize(), Math.floor(i / view.getGameSize()));
+        };
+
+        for (var i = 0; i < gridCells.length; i++) {
+            gridCells[i].addEventListener("click", f.bind(this, i));
+        }
+    };
+
+    this.setActiveMode = function (n) {
+        activeMode = n * 1 === 0 ? 0 : 1;
+    };
+
+    this.keyboardNumber = function (n) {
+        if (activeCell !== undefined && n <= gameSize) {
+            var x = activeCell % view.getGameSize(),
+                y = Math.floor(activeCell / view.getGameSize());
+            if (activeMode === 0)
+                view.setNumber(x, y, n * 1);
+            else if (!view.hasNumber(x, y))
+                view.setNote(x, y, n * 1);
+        }
+    };
+
+    this.keyboardDelete = function () {
+        if (activeCell !== undefined) {
+            view.clearCell(activeCell % view.getGameSize(), Math.floor(activeCell / view.getGameSize()));
+        }
+    };
+
+    this.getGameSize = function () {
+        return gameSize;
     };
 }

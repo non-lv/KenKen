@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <meta name="mobile-web-app-capable" content="yes"/>
     <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <link rel="shortcut icon" href="#" />
 
-    <link rel="stylesheet" type="text/css" href="normalize.css"/>
-    <link rel="stylesheet" type="text/css" href="KenKen.css"/>
+    <link rel="stylesheet" type="text/css" href="css/normalize.css"/>
+    <link rel="stylesheet" type="text/css" href="css/KenKen.css"/>
 
     <title>KenKen Solver</title>
 </head>
@@ -22,11 +23,11 @@
     <option value="9">9x9</option>
 </select>
 
-<div id="KenKenGrid"></div>
+<div id="KenKenGrid" tabindex="0"></div>
 
-<script src="jquery-3.4.1.min.js"></script>
-<script src="Model.js"></script>
-<script src="View.js"></script>
-<script src="Controller.js"></script>
+<script src="js/jquery-3.4.1.min.js"></script>
+<script src="js/model/Model.js"></script>
+<script src="js/view/View.js"></script>
+<script src="js/controller/Controller.js"></script>
 </body>
 </html>

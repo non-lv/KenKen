@@ -55,6 +55,23 @@ function Controller() {
                 default:
             }
         });
+
+        controller.keyPressListener();
+    };
+
+    this.keyPressListener = function () {
+        $("#KenKenGrid").keyup(function (e) {
+            var number = RegExp("^[1-9]$");
+            if (number.test(e.key)) {
+                view.keyboardNumber(e.key);
+            } else if (e.key === "Backspace" || e.key === "Delete") {
+                view.keyboardDelete();
+            } else if (e.key === "Z" || e.key === "z") {
+                view.setActiveMode(0);
+            } else if (e.key === "X" || e.key === "x") {
+                view.setActiveMode(1);
+            }
+        });
     };
 }
 

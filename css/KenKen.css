@@ -1,3 +1,9 @@
+#selectGridSize{
+    display: block;
+    margin: 5px auto 5px auto;
+    padding: 3px 1em 3px 1.5em;
+}
+
 #KenKenGrid{
     display: block;
     margin: auto;
