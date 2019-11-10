@@ -132,9 +132,9 @@ function View() {
     this.clearCell = function (x, y) {
         var cell = gridCells[y * model.getSize() + x].getElementsByClassName("number")[0],
             note = gridCells[y * model.getSize() + x].getElementsByClassName("note")[0];
-        if(cell !== undefined)
+        if (cell !== undefined)
             gridCells[y * model.getSize() + x].removeChild(cell);
-        if(note !== undefined)
+        if (note !== undefined)
             gridCells[y * model.getSize() + x].removeChild(note);
     };
 
@@ -208,6 +208,8 @@ function View() {
     };
 
     this.setActiveMode = function (n) {
+        if (activeMode !== n * 1)
+            $(".mButton").toggleClass("mButtonActive");
         activeMode = n * 1 === 0 ? 0 : 1;
     };
 
@@ -216,9 +218,9 @@ function View() {
             var x = activeCell % view.getGameSize(),
                 y = Math.floor(activeCell / view.getGameSize());
             if (activeMode === 0)
-                view.setNumber(x, y, n * 1);
+                model.setNumber(x, y, n * 1);
             else if (!view.hasNumber(x, y))
-                view.setNote(x, y, n * 1);
+                model.setNote(x, y, n * 1);
         }
     };
 

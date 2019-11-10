@@ -3,7 +3,9 @@
 function Model() {
     var size,
         cellGroups = [],
-        groups = [];
+        groups = [],
+        numbers = [],
+        notes = [];
 
     this.loadPuzzle = function (puzzle) {
         //3000001020301020304122200502010202
@@ -35,6 +37,22 @@ function Model() {
         for (var i = 0; i <= groupCount; i++) {
             groups[i][1] = this.hexToDec(puzzle.slice(0, numberSize)) * 1;
             puzzle = puzzle.slice(numberSize);
+        }
+
+        this.initCells();
+    };
+
+    this.initCells = function () {
+        for (var x = 0; x < size; x++) {
+            numbers[x] = [];
+            notes[x] = [];
+            for (var y = 0; y < size; y++) {
+                numbers[x][y] = 0;
+                notes[x][y] = [];
+                for (var i = 1; i <= size; i++) {
+                    notes[x][y][i] = false;
+                }
+            }
         }
     };
 
@@ -75,5 +93,29 @@ function Model() {
 
     this.getGroups = function () {
         return groups;
+    };
+
+    this.getGroupSize = function (i) {
+        var count = 0;
+        if (i < groups.size)
+            for (var a = 0; a < size; a++)
+                for (var b = 0; b < size; b++)
+                    if (cellGroups[a][b] === i) count++;
+
+        return count;
+    };
+
+    this.setNumber = function (x, y, n) {
+        numbers[x][y] = numbers[x][y] === n ? 0 : n;
+        view.setNumber(x, y, n);
+    };
+
+    this.setNote = function (x, y, n) {
+        notes[x][y][n] = !notes[x][y][n];
+        view.setNote(x, y, n);
+    };
+
+    this.getDetails = function (x, y) {
+        return numbers[x][y] === 0 ? notes[x][y] : numbers[x][y];
     };
 }

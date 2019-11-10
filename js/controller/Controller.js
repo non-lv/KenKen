@@ -57,6 +57,7 @@ function Controller() {
         });
 
         controller.keyPressListener();
+        controller.buttonListener();
     };
 
     this.keyPressListener = function () {
@@ -71,6 +72,15 @@ function Controller() {
             } else if (e.key === "X" || e.key === "x") {
                 view.setActiveMode(1);
             }
+        });
+    };
+
+    this.buttonListener = function () {
+        $(".mButton").click(function () {
+            if (this.innerHTML === "Normal") {
+                view.setActiveMode(0);
+            } else
+                view.setActiveMode(1);
         });
     };
 }
