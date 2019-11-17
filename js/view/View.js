@@ -48,10 +48,10 @@ function View() {
                             hint += "-";
                             break;
                         case(3):
-                            hint += "*";
+                            hint += "x";
                             break;
                         case(4):
-                            hint += "/";
+                            hint += "÷";
                             break;
                         default:
                     }
