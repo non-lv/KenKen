@@ -1,5 +1,7 @@
 "use strict";
 
+var solver;
+
 function Model() {
     var size,
         cellGroups = [],
@@ -9,6 +11,8 @@ function Model() {
 
     this.loadPuzzle = function (puzzle) {
         //3000001020301020304122200502010202
+        this.reset();
+
         var groupCount = 0,
             numberSize;
 
@@ -87,17 +91,27 @@ function Model() {
         return size;
     };
 
+    this.getCells = function () {
+        var cells = [];
+        for (var x = 0; x < this.getSize(); x++) {
+            cells[x] = [];
+            for (var y = 0; y < this.getSize(); y++)
+                cells[x][y] = this.getDetails(x, y);
+        }
+        return cells;
+    };
+
     this.getCellGroups = function () {
-        return cellGroups;
+        return cellGroups.slice();
     };
 
     this.getGroups = function () {
-        return groups;
+        return groups.slice();
     };
 
     this.getGroupSize = function (i) {
         var count = 0;
-        if (i < groups.size)
+        if (i < groups.length)
             for (var a = 0; a < size; a++)
                 for (var b = 0; b < size; b++)
                     if (cellGroups[a][b] === i) count++;
@@ -116,6 +130,19 @@ function Model() {
     };
 
     this.getDetails = function (x, y) {
-        return numbers[x][y] === 0 ? notes[x][y] : numbers[x][y];
+        return numbers[x][y] === 0 ? notes[x][y].slice() : numbers[x][y];
     };
+
+    this.reset = function () {
+        size = undefined;
+        cellGroups = [];
+        groups = [];
+        numbers = [];
+        notes = [];
+    };
+
+    this.initSolver = function () {
+        solver = new Solver();
+        solver.solve();
+    }
 }

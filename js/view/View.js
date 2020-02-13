@@ -1,12 +1,17 @@
 "use strict";
 
 function View() {
+    // Grid
     var gridSize = 75,
         gameSize = 0,
         grid = $("#KenKenGrid"),
         gridCells = [],
         activeCell,
         activeMode = 0;
+    // Buttons
+    var solveButton = $(".mButton:contains('Solve')")[0],
+        next = $(".mButton:contains('Next')")[0],
+        prev = $(".mButton:contains('Previous')")[0];
 
     this.init = function () {
         this.grid(model.getSize());
@@ -66,6 +71,10 @@ function View() {
 
     this.clean = function () {
         grid.empty();
+        solver = '';
+        solveButton.hidden = false;
+        next.hidden = true;
+        prev.hidden = true;
     };
 
     this.grid = function (size) {
@@ -233,4 +242,10 @@ function View() {
     this.getGameSize = function () {
         return gameSize;
     };
+
+    this.solve = function () {
+        solveButton.hidden = true;
+        next.hidden = false;
+        prev.hidden = false;
+    }
 }

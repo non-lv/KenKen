@@ -51,16 +51,19 @@
 }
 
 #buttons {
+    user-select: none;
     margin: 3vh auto 0 auto;
-    width: 27vw;
+    width: 100vw;
     text-align: center;
 }
 
 .mButton {
-    float: left;
+    display: inline-block;
+    left: 50%;
     margin: 0 1.4vw 0 1.4vw;
     padding: 2px 0 2px 0;
-    width: 10vw;
+    width: 33vw;
+    max-width: 175px;
     border: gray 2px solid;
     border-radius: 5px;
     font-size: 1.5em;

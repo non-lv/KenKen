@@ -77,7 +77,14 @@ function Controller() {
 
     this.buttonListener = function () {
         $(".mButton").click(function () {
-            if (this.innerHTML === "Normal") {
+            if (this.innerHTML === "Solve") {
+                view.solve();
+                model.initSolver();
+            } else if (this.innerHTML === "Next Step") {
+                solver.nextStep();
+            } else if (this.innerHTML === "Previous Step") {
+                solver.previousStep();
+            } else if (this.innerHTML === "Normal") {
                 view.setActiveMode(0);
             } else
                 view.setActiveMode(1);
