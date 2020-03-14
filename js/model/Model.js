@@ -91,16 +91,6 @@ function Model() {
         return size;
     };
 
-    this.getCells = function () {
-        let cells = [];
-        for (let x = 0; x < this.getSize(); x++) {
-            cells[x] = [];
-            for (let y = 0; y < this.getSize(); y++)
-                cells[x][y] = this.getDetails(x, y);
-        }
-        return cells;
-    };
-
     this.getCellGroups = function () {
         return cellGroups.slice();
     };
@@ -144,5 +134,103 @@ function Model() {
     this.initSolver = function () {
         solver = new Solver();
         solver.solve();
-    }
+    };
+
+// Checks if all cells are filled with numbers
+    this.isFilled = function () {
+        let cellGroups = this.getCellGroups();
+
+        for (let x = 0; x < cellGroups.length; x++)
+            for (let y = 0; y < cellGroups.length; y++)
+                if (Array.isArray(this.getDetails(x, y))) return false;
+        return true;
+    };
+
+// Checks if the puzzle is solved
+    this.isSolved = function () {
+        if (this.isFilled()) {
+            // Checks rows and columns
+            for (let x = 0; x < this.getSize(); x++) {
+                let row = [], col = [];
+                for (let y = 0; y < this.getSize(); y++) {
+                    let r = this.getDetails(x, y), c = this.getDetails(y, x);
+                    if (row[r] || col[c])
+                        return false;
+                    row[r] = true;
+                    col[c] = true;
+                }
+            }
+
+            // Checks groups
+            for (let i = 0; i < groups.length; i++) {
+                let group = this.findCellsInGroup(i);
+                let groupID = groups[i];
+
+                let num = 0;
+                switch (groupID[0]) {
+                    case(0):
+                        num = group[0][2];
+                        break;
+                    case(1):
+                        let sum = 0;
+                        for (let s = 0; s < group.length; s++)
+                            sum += group[s][2];
+                        num = sum;
+                        break;
+                    case(2):
+                        let max = 0, maxID = 0;
+                        for (let m = 0; m < group.length; m++)
+                            if (max < group[m][2]) {
+                                max = group[m][2];
+                                maxID = m;
+                            }
+                        group.splice(maxID, 1);
+
+                        for (let t = 0; t < group.length; t++)
+                            max -= group[t][2];
+
+                        num = max;
+                        break;
+                    case(3):
+                        let prod = 1;
+                        for (let p = 0; p < group.length; p++)
+                            prod *= group[p][2];
+                        num = prod;
+                        break;
+                    case(4):
+                        let max_ = 0, maxID_ = 0;
+                        for (let m = 0; m < group.length; m++)
+                            if (max_ < group[m][2]) {
+                                max_ = group[m][2];
+                                maxID_ = m;
+                            }
+                        group.splice(maxID_, 1);
+
+                        for (let t = 0; t < group.length; t++)
+                            max_ /= group[t][2];
+
+                        num = max_;
+                }
+                if (num !== groupID[1])
+                    return false;
+            }
+            return true;
+        }
+        return false;
+    };
+
+// array[cellNumber][x / y]
+    this.findCellsInGroup = function (i, allCells) {
+        let cells = [],
+            cellGroups = this.getCellGroups();
+
+        if (allCells === undefined) {
+            for (let x = 0; x < cellGroups.length; x++)
+                for (let y = 0; y < cellGroups.length; y++)
+                    if (cellGroups[x][y] === i) cells.push([x, y, this.getDetails(x, y)]);
+        } else
+            for (let index = 0; index < allCells.length; index++)
+                if (cellGroups[allCells[index][0]][allCells[index][1]] === i) cells.push(allCells[index].slice());
+        return cells;
+    };
 }

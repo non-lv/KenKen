@@ -32,7 +32,7 @@ function Solver() {
         let groups = model.getGroups();
         for (let i = 0; i < groups.length; i++) {
             if (groups[i][0] === 0) {
-                let cell = this.findCellsInGroup(i)[0];
+                let cell = model.findCellsInGroup(i)[0];
                 steps.push([[[cell[0], cell[1], groups[i][1]]]]);
                 stepInfo.push([givenNo, [[cell[0], cell[1]]]]);
                 this.nextStep();
@@ -64,7 +64,7 @@ function Solver() {
                 cells.splice(i, 1);
             else cells[i][2] = model.getDetails(cells[i][0], cells[i][1]);
 
-        while (!this.isSolved()) {
+        while (!model.isSolved()) {
             progress = steps.length;
             cycles++;
 
@@ -195,7 +195,7 @@ function Solver() {
     this._notes = function (note_limit) {
         for (let i = 0; i < model.getGroups().length; i++) {
             // Retrieves notes in the group
-            let cellGroup = this.findCellsInGroup(i, cells);
+            let cellGroup = model.findCellsInGroup(i, cells);
             if (cellGroup.length === 0) continue;
 
             // Adding notes
@@ -231,7 +231,7 @@ function Solver() {
         // Add static numbers as the option
         let gIndex = model.getCellGroups()[cells[0][0]][cells[0][1]];
         if (model.getGroupSize(gIndex) !== cells.length) {
-            let temp = this.findCellsInGroup(gIndex);
+            let temp = model.findCellsInGroup(gIndex);
             let a = 0, b = 0;
             while (b < temp.length) {
                 if (a >= cells.length || cells[a][0] + cells[a][1] * model.getSize() > temp[b][0] + temp[b][1] * model.getSize()) {
@@ -713,34 +713,9 @@ function Solver() {
         return coverage;
     };
 
-// Checks if the puzzle is solved (only checks if all cells are with some numbers in them)
-    this.isSolved = function () {
-        let cellGroups = model.getCellGroups();
-
-        for (let x = 0; x < cellGroups.length; x++)
-            for (let y = 0; y < cellGroups.length; y++)
-                if (!this.isCellNumber([x, y])) return false;
-        return true;
-    };
-
 // Checks if the number is not taken in that row / column
     this.isAvailable = function (number, x, y) {
         return (rowNums[y][number] === undefined || rowNums[y][number].includes(x)) && (colNums[x][number] === undefined || colNums[x][number].includes(y));
-    };
-
-// array[cellNumber][x / y]
-    this.findCellsInGroup = function (i, allCells) {
-        let cells = [],
-            cellGroups = model.getCellGroups();
-
-        if (allCells === undefined) {
-            for (let x = 0; x < cellGroups.length; x++)
-                for (let y = 0; y < cellGroups.length; y++)
-                    if (cellGroups[x][y] === i) cells.push([x, y]);
-        } else
-            for (let index = 0; index < allCells.length; index++)
-                if (cellGroups[allCells[index][0]][allCells[index][1]] === i) cells.push(allCells[index].slice());
-        return cells;
     };
 
 // Returns all noted cells in a row
