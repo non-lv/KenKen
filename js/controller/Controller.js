@@ -76,19 +76,40 @@ function Controller() {
     };
 
     this.buttonListener = function () {
-        $(".mButton").click(function () {
-            if (this.innerHTML === "Solve") {
-                view.solve();
-                model.initSolver();
-            } else if (this.innerHTML === "Next Step") {
-                solver.nextStep();
-            } else if (this.innerHTML === "Previous Step") {
-                solver.previousStep();
-            } else if (this.innerHTML === "Normal") {
-                view.setActiveMode(0);
-            } else
-                view.setActiveMode(1);
+        var buttons = $(".mButton");
+        buttons[0].addEventListener("click", function () {
+            model.initSolver();
+            view.solve();
         });
+
+        buttons[1].addEventListener("click", function () {
+            solver.previousStep();
+        });
+
+        buttons[2].addEventListener("click", function () {
+            solver.nextStep();
+        });
+
+        buttons[3].addEventListener("click", function () {
+            view.setActiveMode(0);
+        });
+
+        buttons[4].addEventListener("click", function () {
+            view.setActiveMode(1);
+        });
+        // $(".mButton").click(function () {
+        //     if (this.innerHTML === "Solve") {
+        //         model.initSolver();
+        //         view.solve();
+        //     } else if (this.id === "next") {
+        //         solver.nextStep();
+        //     } else if (this.id === "prev") {
+        //         solver.previousStep();
+        //     } else if (this.innerHTML === "Normal") {
+        //         view.setActiveMode(0);
+        //     } else
+        //         view.setActiveMode(1);
+        // });
     };
 }
 

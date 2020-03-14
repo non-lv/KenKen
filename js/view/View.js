@@ -10,8 +10,12 @@ function View() {
         activeMode = 0;
     // Buttons
     var solveButton = $(".mButton:contains('Solve')")[0],
-        next = $(".mButton:contains('Next')")[0],
-        prev = $(".mButton:contains('Previous')")[0];
+        next = $("#next")[0],
+        prev = $("#prev")[0],
+        steps = $("#steps")[0],
+        stepCount = $("#step_count")[0],
+        currentStep = $("#current_step")[0],
+        stepName = $("#stepName")[0];
 
     this.init = function () {
         this.grid(model.getSize());
@@ -19,10 +23,10 @@ function View() {
     };
 
     this.setBorders = function () {
-        var cellGroups = model.getCellGroups(),
+        let cellGroups = model.getCellGroups(),
             size = model.getSize();
-        for (var y = 0; y < size; y++) {
-            for (var x = 0; x < size; x++) {
+        for (let y = 0; y < size; y++) {
+            for (let x = 0; x < size; x++) {
                 if (x !== size - 1 && cellGroups[x][y] !== cellGroups[x + 1][y]) {
                     gridCells[y * size + x].style.borderRightWidth = "3px";
                     gridCells[y * size + x].style.width = gridSize - 4 + "px";
@@ -75,6 +79,7 @@ function View() {
         solveButton.hidden = false;
         next.hidden = true;
         prev.hidden = true;
+        steps.hidden = true;
     };
 
     this.grid = function (size) {
@@ -173,8 +178,33 @@ function View() {
         cell.innerText = note;
     };
 
-    this.highlightCell = function (x, y) {
-        gridCells[y * model.getSize() + x].style.backgroundColor = "#ff6e68";
+    this.highlightCell = function (x, y, color) {
+        if (color === undefined)
+            color = "#ff9490";
+        gridCells[y * model.getSize() + x].style.backgroundColor = color;
+    };
+
+    this.highlightNumber = function (x, y, numbers) {
+        var cell = gridCells[y * model.getSize() + x].getElementsByClassName("note")[0];
+
+        if (cell !== undefined) {
+            var note = cell.innerText;
+            var i = 0, t = 0,
+                final = "";
+            while (i < note.length) {
+                if (numbers[t] === note[i]) {
+                    final += '<font color="#ff6e68">' + note[i] + '</font>';
+                    i++;
+                    t++;
+                } else if (numbers[t] > note[i] || t >= numbers.length) {
+                    final += note[i];
+                    i++;
+                } else
+                    t++;
+            }
+
+            cell.innerHTML = final;
+        }
     };
 
     this.highlightRow = function (y) {
@@ -247,5 +277,19 @@ function View() {
         solveButton.hidden = true;
         next.hidden = false;
         prev.hidden = false;
-    }
+        steps.hidden = false;
+        stepCount.innerText = solver.getStepCount();
+        currentStep.innerText = 0;
+    };
+
+    this.setCurrentStep = function (step) {
+        currentStep.innerText = step;
+
+        prev.disabled = step === 0;
+        next.disabled = step === solver.getStepCount();
+    };
+
+    this.setStepExplanation = function (stepName_) {
+        stepName.innerText = stepName_;
+    };
 }

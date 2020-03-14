@@ -52,7 +52,7 @@
 
 #buttons {
     user-select: none;
-    margin: 3vh auto 0 auto;
+    margin: 1.1vh auto 0 auto;
     width: 100vw;
     text-align: center;
 }
@@ -70,7 +70,7 @@
     font-family: sans-serif;
 }
 
-.mButton:hover {
+.mButton:hover:not([disabled]) {
     background-color: #FDB7CE;
     border-color: indianred;
     cursor: pointer;
@@ -85,4 +85,11 @@
 .mButtonActive:hover {
     border-color: #680B2A;
     background-color: #DD4275;
+}
+
+#steps {
+    text-align: center;
+    margin: 1.1vh auto 0 auto;
+    font-size: 1.5em;
+    font-family: sans-serif;
 }

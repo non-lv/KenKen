@@ -25,12 +25,21 @@
 <div id="KenKenGrid" tabindex="0"></div>
 
 <div id="buttons">
-    <div class="mButton">Solve</div>
-    <div class="mButton" hidden>Next Step</div>
-    <div class="mButton" hidden>Previous Step</div>
-    <div class="mButton" hidden>Normal</div>
-    <div class="mButton" hidden>Note</div>
+    <button class="mButton">Solve</button>
+    <button id="prev" class="mButton" hidden>Back</button>
+    <button id="next" class="mButton" hidden>Next</button>
+    <button class="mButton" hidden>Normal</button>
+    <button class="mButton" hidden>Note</button>
 </div>
+
+<div id="steps" hidden>
+    <span>Step</span>
+    <br>
+    <span id="current_step">2</span> / <span id="step_count">13</span>
+    <br>
+    <span id="stepName"></span>
+</div>
+
 <script src="js/jquery-3.4.1.min.js"></script>
 <script src="js/model/Model.js"></script>
 <script src="js/view/View.js"></script>

@@ -13,7 +13,7 @@ function Model() {
         //3000001020301020304122200502010202
         this.reset();
 
-        var groupCount = 0,
+        let groupCount = 0,
             numberSize;
 
         size = puzzle.slice(0, 1) * 1;
@@ -22,23 +22,23 @@ function Model() {
         numberSize = puzzle.slice(0, 1) * 1;
         puzzle = puzzle.slice(1);
 
-        for (var i = 0; i < size; i++)
+        for (let i = 0; i < size; i++)
             cellGroups[i] = [];
-        for (var y = 0; y < size; y++) {
-            for (var x = 0; x < size; x++) {
+        for (let y = 0; y < size; y++) {
+            for (let x = 0; x < size; x++) {
                 cellGroups[x][y] = puzzle.slice(0, 2) * 1;
                 groupCount = groupCount > cellGroups[x][y] ? groupCount : cellGroups[x][y];
                 puzzle = puzzle.slice(2);
             }
         }
 
-        for (var i = 0; i <= groupCount; i++) {
+        for (let i = 0; i <= groupCount; i++) {
             groups[i] = [];
             groups[i][0] = puzzle.slice(0, 1) * 1;
             puzzle = puzzle.slice(1);
         }
 
-        for (var i = 0; i <= groupCount; i++) {
+        for (let i = 0; i <= groupCount; i++) {
             groups[i][1] = this.hexToDec(puzzle.slice(0, numberSize)) * 1;
             puzzle = puzzle.slice(numberSize);
         }
@@ -47,13 +47,13 @@ function Model() {
     };
 
     this.initCells = function () {
-        for (var x = 0; x < size; x++) {
+        for (let x = 0; x < size; x++) {
             numbers[x] = [];
             notes[x] = [];
-            for (var y = 0; y < size; y++) {
+            for (let y = 0; y < size; y++) {
                 numbers[x][y] = 0;
                 notes[x][y] = [];
-                for (var i = 1; i <= size; i++) {
+                for (let i = 1; i <= size; i++) {
                     notes[x][y][i] = false;
                 }
             }
@@ -61,7 +61,7 @@ function Model() {
     };
 
     this.hexToDec = function (hex) {
-        var n = 0;
+        let n = 0;
         switch (hex.slice(0, 1)) {
             case("F"):
                 n += 15 * Math.pow(16, hex.length - 1);
@@ -92,10 +92,10 @@ function Model() {
     };
 
     this.getCells = function () {
-        var cells = [];
-        for (var x = 0; x < this.getSize(); x++) {
+        let cells = [];
+        for (let x = 0; x < this.getSize(); x++) {
             cells[x] = [];
-            for (var y = 0; y < this.getSize(); y++)
+            for (let y = 0; y < this.getSize(); y++)
                 cells[x][y] = this.getDetails(x, y);
         }
         return cells;
@@ -110,10 +110,10 @@ function Model() {
     };
 
     this.getGroupSize = function (i) {
-        var count = 0;
+        let count = 0;
         if (i < groups.length)
-            for (var a = 0; a < size; a++)
-                for (var b = 0; b < size; b++)
+            for (let a = 0; a < size; a++)
+                for (let b = 0; b < size; b++)
                     if (cellGroups[a][b] === i) count++;
 
         return count;
