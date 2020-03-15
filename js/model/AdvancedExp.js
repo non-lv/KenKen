@@ -1,20 +1,48 @@
-function AdvancedExp(stepInfo) {
+function AdvancedExp(stepInfo, steps) {
     let info = stepInfo;
 
     this.advance = function () {
         for (let i = 0; i < info.length; i++) {
             switch (info[i][0]) {
                 case(addedNotes):
-                    this.addedNotes(info[i][1]);
+                    this.addedNotes(steps[i][1]);
                     break;
                 case(updatedNotes):
-                    this.updatedNotes(info[i][1]);
+                    this.updatedNotes(steps[i][1]);
                     break;
             }
+            solver.nextStep();
         }
+        solver.resetSteps();
     };
 
     this.addedNotes = function (notes) {
+        let group = model.findCellsInGroup(model.getCellGroups()[notes[0][0]][notes[0][1]]);
+        // Convert notes to proper format
+        for (let i = 0; i < group.length; i++)
+            if (!Array.isArray(group[i][2])) {
+                let num = group[i][2];
+                group[i][2] = [];
+                for (let t = 1; t <= model.getSize(); t++)
+                    group[i][2][t] = num === t ? 0 : false;
+            }
+            else
+                for (let t = 1; t <= model.getSize(); t++)
+                    group[i][2][t] = 0;
+
+        let base = this.basicNotes(group);
+        // Convert to notes format [[x, y, [1, 3...]]]
+        let note = [];
+        for (let i = 0; i < base.length; i++) {
+            note = [];
+            for (let t = 1; t <= model.getSize(); t++)
+                if (base[i][2][t] === 2) note.push(t);
+            base[i][2] = note.slice();
+        }
+        let difference = this.noteDifference(notes, base);
+
+        if (difference.length > 0)
+            console.log(difference);
         // Get cells in the note range
         // Calc note diff
         // Show restrictions for difference
@@ -22,11 +50,28 @@ function AdvancedExp(stepInfo) {
     };
 
     this.updatedNotes = function () {
-
+        // Get cells in the note range
+        // Calc note diff
+        // diff diff?
+        // profit lol
     };
 
-    this.noteDifference = function () {
+// Calc difference between 2 note versions
+    this.noteDifference = function (notes_I, notes_II) {
+        // Both notes have to be aligned
+        for (let i = 0; i < notes_I.length; i++) {
+            for (let t = 0; t < notes_I[i][2].length; t++) {
+                let num = notes_I[i][2][t];
+                if (notes_II[i][2].includes(num))
+                    notes_II[i][2].splice(notes_II[i][2].indexOf(num), 1);
+                else
+                    notes_II[i][2].push(num);
+            }
+        }
+        for (let i = notes_II.length - 1; i >= 0; i--)
+            if (notes_II[i][2].length === 0) notes_II.splice(i, 1);
 
+        return notes_II;
     };
 
     this.basicNotes = function (cells) {

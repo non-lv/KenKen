@@ -41,9 +41,12 @@ function Solver() {
 
         this.solveLoop();
 
-        for (; currentStep > 0; this.previousStep()) ;
+        this.resetSteps();
 
         this.reduceSteps();
+
+        let adv = new AdvancedExp(stepInfo, steps);
+        adv.advance();
     };
 
 // Finding cell notes (core loop? for now)
@@ -214,7 +217,6 @@ function Solver() {
     this.notesPopulate = function (cells_, g) {
         let cells = JSON.parse(JSON.stringify(cells_));
         let cells__ = JSON.parse(JSON.stringify(cells_));
-        // for (var i = 0; i < cells.length; i++) cells[i][2] = cells_[i][2].slice();
 
         // 0 = available | 1 = testing | 2 = true
         // Convert empty cells to enabled ones
@@ -833,6 +835,10 @@ function Solver() {
                         model.setNote(noteSteps[i][0], noteSteps[i][1], noteSteps[i][2][n]);
             }
         }
+    };
+
+    this.resetSteps = function () {
+        for (; currentStep > 0; this.previousStep()) ;
     };
 
     this.stepToInfo = function (text, step, stepA) {
