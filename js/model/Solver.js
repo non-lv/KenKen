@@ -1,11 +1,11 @@
-function Solver() {
-    const givenNo = "Given Number",
-        singleNo = "Single Number in Note",
-        updatedNotes = "Updated Notes",
-        noteGroup = "Note Group",
-        addedNotes = "Added Notes",
-        hiddenGroup = "Hidden Number(s) in a ";
+const givenNo = "Given Number",
+    singleNo = "Single Number in Note",
+    updatedNotes = "Updated Notes",
+    noteGroup = "Note Group",
+    addedNotes = "Added Notes",
+    hiddenGroup = "Hidden Number(s) in a ";
 
+function Solver() {
 // Steps format [numberStep, [x, y, number]]
 //              [numberStep, [[x, y, [notes]]]]
 // New format [[[x, y, number], ...], [[x, y, [notes]], ...]]
