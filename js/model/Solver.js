@@ -303,39 +303,33 @@ function Solver() {
             return cells;
         }
 
-        let option = false,
-            invalid = false;
+        let option = false;
 
         // Go through all possible numbers in the cell
-        for (let n = 1; n <= model.getSize(); n++) {
+        number:
+            for (let n = 1; n <= model.getSize(); n++) {
 
-            // Check if number if valid
-            if (sum - n > 0 && (cells[i][2][n] === 0 || cells[i][2][n] === 2) && this.isAvailable(n, cells[i][0], cells[i][1])) {
-                // Checks if the number is already considered for usage
-                for (let c = 0; c < i; c++)
-                    if ((cells[c][0] === cells[i][0] || cells[c][1] === cells[i][1]) && cells[c][2][n] === 1) {
-                        invalid = true;
-                        break;
-                    }
-                if (invalid) {
-                    invalid = false;
-                    continue;
+                // Check if number if valid
+                if (sum - n > 0 && (cells[i][2][n] === 0 || cells[i][2][n] === 2) && this.isAvailable(n, cells[i][0], cells[i][1])) {
+                    // Checks if the number is already considered for usage
+                    for (let c = 0; c < i; c++)
+                        if ((cells[c][0] === cells[i][0] || cells[c][1] === cells[i][1]) && cells[c][2][n] === 1)
+                            continue number;
+
+                    // Setups the number as the option
+                    let t = cells[i][2][n];
+                    cells[i][2][n] = 1;
+                    let result = this.notesAddition(cells, sum - n, i + 1);
+
+                    // Process the return value
+                    if (result !== undefined) {
+                        option = true;
+                        cells = result;
+                        cells[i][2][n] = 2;
+                    } else
+                        cells[i][2][n] = t;
                 }
-
-                // Setups the number as the option
-                let t = cells[i][2][n];
-                cells[i][2][n] = 1;
-                let result = this.notesAddition(cells, sum - n, i + 1);
-
-                // Process the return value
-                if (result !== undefined) {
-                    option = true;
-                    cells = result;
-                    cells[i][2][n] = 2;
-                } else
-                    cells[i][2][n] = t;
             }
-        }
 
         return option ? cells : undefined;
     };
@@ -406,38 +400,32 @@ function Solver() {
             return cells;
         }
 
-        let option = false,
-            invalid = false;
+        let option = false;
 
         // Go through all possible numbers in the cell
-        for (let n = 1; n <= model.getSize(); n++) {
-            // Check if number if valid
-            if (res % n === 0 && this.isAvailable(n, cells[i][0], cells[i][1]) && (cells[i][2][n] === 0 || cells[i][2][n] === 2)) {
-                // Checks if the number is already considered for usage
-                for (let c = 0; c < i; c++)
-                    if ((cells[c][0] === cells[i][0] || cells[c][1] === cells[i][1]) && cells[c][2][n] === 1) {
-                        invalid = true;
-                        break;
-                    }
-                if (invalid) {
-                    invalid = false;
-                    continue;
+        number:
+            for (let n = 1; n <= model.getSize(); n++) {
+                // Check if number if valid
+                if (res % n === 0 && this.isAvailable(n, cells[i][0], cells[i][1]) && (cells[i][2][n] === 0 || cells[i][2][n] === 2)) {
+                    // Checks if the number is already considered for usage
+                    for (let c = 0; c < i; c++)
+                        if ((cells[c][0] === cells[i][0] || cells[c][1] === cells[i][1]) && cells[c][2][n] === 1)
+                            continue number;
+
+                    // Setups the number as the option
+                    let t = cells[i][2][n];
+                    cells[i][2][n] = 1;
+                    let result = this.notesMultiplication(cells, res / n, i + 1);
+
+                    // Process the return value
+                    if (result !== undefined) {
+                        option = true;
+                        cells = result;
+                        cells[i][2][n] = 2;
+                    } else
+                        cells[i][2][n] = t;
                 }
-
-                // Setups the number as the option
-                let t = cells[i][2][n];
-                cells[i][2][n] = 1;
-                let result = this.notesMultiplication(cells, res / n, i + 1);
-
-                // Process the return value
-                if (result !== undefined) {
-                    option = true;
-                    cells = result;
-                    cells[i][2][n] = 2;
-                } else
-                    cells[i][2][n] = t;
             }
-        }
 
         return option ? cells : undefined;
     };
