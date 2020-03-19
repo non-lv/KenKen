@@ -1,6 +1,7 @@
 const givenNo = "Given Number",
     singleNo = "Single Number in Note",
     updatedNotes = "Updated Notes",
+    updatedOptions = "Reevaluated possible Note options",
     noteGroup = "Note Group",
     addedNotes = "Added Notes",
     hiddenGroup = "Hidden Number(s) in a ";
@@ -19,7 +20,7 @@ function Solver() {
     var cells = [];
 
     this.initNums = function () {
-        for (var i = 0; i < model.getSize(); i++) {
+        for (let i = 0; i < model.getSize(); i++) {
             rowNums[i] = [];
             colNums[i] = [];
         }
@@ -201,11 +202,18 @@ function Solver() {
             let cellGroup = model.findCellsInGroup(i, cells);
             if (cellGroup.length === 0) continue;
 
+            let fresh = true;
+            for (let t = 0; t < cellGroup.length; t++)
+                if (!this.isCellEmpty(cellGroup[t])) {
+                    fresh = false;
+                    break;
+                }
+
             // Adding notes
             let step = this.notesPopulate(cellGroup, model.getCellGroups()[cellGroup[0][0]][cellGroup[0][1]]);
             if (step !== undefined && this.stepNoteLength(step) <= note_limit) {
                 steps.push(step);
-                this.stepToInfo(addedNotes, step);
+                this.stepToInfo(fresh ? addedNotes : updatedOptions, step);
                 this.nextStep();
                 return true;
             }

@@ -7,7 +7,7 @@ function AdvancedExp(stepInfo, steps) {
                 case(addedNotes):
                     this.addedNotes(steps[i][1]);
                     break;
-                case(updatedNotes):
+                case(updatedOptions):
                     this.updatedNotes(steps[i][1]);
                     break;
             }
@@ -20,15 +20,15 @@ function AdvancedExp(stepInfo, steps) {
         let group = model.findCellsInGroup(model.getCellGroups()[notes[0][0]][notes[0][1]]);
         // Convert notes to proper format
         for (let i = 0; i < group.length; i++)
-            if (!Array.isArray(group[i][2])) {
-                let num = group[i][2];
-                group[i][2] = [];
-                for (let t = 1; t <= model.getSize(); t++)
-                    group[i][2][t] = num === t ? 0 : false;
-            }
-            else
-                for (let t = 1; t <= model.getSize(); t++)
-                    group[i][2][t] = 0;
+            // if (!Array.isArray(group[i][2])) {
+            //     let num = group[i][2];
+            //     group[i][2] = [];
+            //     for (let t = 1; t <= model.getSize(); t++)
+            //         group[i][2][t] = num === t ? 0 : false;
+            // }
+            // else
+            for (let t = 1; t <= model.getSize(); t++)
+                group[i][2][t] = 0;
 
         let base = this.basicNotes(group);
         // Convert to notes format [[x, y, [1, 3...]]]
