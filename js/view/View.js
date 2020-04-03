@@ -241,8 +241,10 @@ function View() {
     this.setGridPress = function () {
         let f = function (i) {
             activeCell = i;
-            //view.removeHighlights();
-            //view.highlightCell(i % view.getGameSize(), Math.floor(i / view.getGameSize()));
+            if (stepCount.innerText === "0") {
+                view.removeHighlights();
+                view.highlightCell(i % view.getGameSize(), Math.floor(i / view.getGameSize()));
+            }
         };
 
         for (let i = 0; i < gridCells.length; i++) {

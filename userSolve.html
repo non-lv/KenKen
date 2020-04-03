@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta name="mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <link rel="shortcut icon" href="img/KenKen.png"/>
+
+    <link rel="stylesheet" type="text/css" href="css/normalize.css"/>
+    <link rel="stylesheet" type="text/css" href="css/KenKen.css"/>
+
+    <title>KenKen Solver</title>
+</head>
+
+<br>
+<h1 style="text-align: center;">Try to Solve this puzzle.</h1>
+
+<div id="KenKenGrid" tabindex="0"></div>
+
+<div id="buttons">
+    <button class="mButton mButtonActive">Normal</button>
+    <button class="mButton">Note</button>
+    <button class="mButton" style="display: none;">Solve</button>
+    <button id="next" style="display: none;"></button>
+    <button id="prev" style="display: none;"></button>
+</div>
+
+<div id="steps" hidden>
+    <span>Step</span>
+    <br>
+    <span id="current_step">0</span> / <span id="step_count">0</span>
+    <br>
+    <span id="stepName"></span>
+</div>
+<div id="text"></div>
+
+<script src="js/jquery-3.4.1.min.js"></script>
+<script src="js/model/Model.js"></script>
+<script src="js/view/View.js"></script>
+<script src="js/controller/userController.js"></script>
+</body>
+</html>
