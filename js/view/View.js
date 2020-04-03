@@ -298,7 +298,7 @@ function View() {
             for (let i = 0; i < stepName_.length; i++) {
                 switch (stepName_[i][1]) {
                     case(onlyOptionCol):
-                        g += "<button class=\"onlyOp\">" + stepName_[i][2][2] + "</button>";
+                        g += "<button class=\"onlyOp\" onclick=''>" + stepName_[i][2][2] + "</button>";
                         break;
                     case(restrictedNumCol):
                         r += "<button class=\"numRest\">" + stepName_[i][2][2] + "</button>";
@@ -310,5 +310,9 @@ function View() {
             stepName.innerHTML = (g !== "" ? onlyOption + "<br>" + g + "<hr>" : "") + (r !== "" ? restrictedNum + "<br>" + r + "<hr>" : "") + (o !== "" ? _restrictedNum + "<br>" + o : "");
         } else
             stepName.innerText = stepName_;
+    };
+
+    this.tempHighlight = function () {
+
     };
 }
