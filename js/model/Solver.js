@@ -66,7 +66,7 @@ function Solver() {
             pair_limit = 2;
 
         // Removes cells with numbers in them and updates their details
-        for (let i = cells.length - 1; i--;)
+        for (let i = cells.length; i--;)
             if (this.isCellNumber(cells[i]))
                 cells.splice(i, 1);
             else cells[i][2] = model.getDetails(cells[i][0], cells[i][1]);

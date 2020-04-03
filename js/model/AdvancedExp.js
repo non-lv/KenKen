@@ -1,4 +1,4 @@
-const onlyOption = "Only Possible Option",
+const onlyOption = "Only Possible Options",
     onlyOptionCol = "#2ECC66",
     restrictedNum = "Number Restricted",
     restrictedNumCol = "#F02B2B",

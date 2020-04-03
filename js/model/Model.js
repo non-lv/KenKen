@@ -12,7 +12,6 @@ function Model() {
     this.loadPuzzle = function (puzzle) {
         //3000001020301020304122200502010202
         this.reset();
-
         let groupCount = 0,
             numberSize;
 
