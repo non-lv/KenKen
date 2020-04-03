@@ -185,11 +185,11 @@ function View() {
     };
 
     this.highlightNumber = function (x, y, numbers) {
-        var cell = gridCells[y * model.getSize() + x].getElementsByClassName("note")[0];
+        let cell = gridCells[y * model.getSize() + x].getElementsByClassName("note")[0];
 
         if (cell !== undefined) {
-            var note = cell.innerText;
-            var i = 0, t = 0,
+            let note = cell.innerText;
+            let i = 0, t = 0,
                 final = "";
             while (i < note.length) {
                 if (numbers[t] === note[i]) {
@@ -208,25 +208,25 @@ function View() {
     };
 
     this.highlightRow = function (y) {
-        for (var i = 0; i < model.getSize(); i++)
+        for (let i = 0; i < model.getSize(); i++)
             this.highlightCell(i, y);
     };
 
     this.highlightColumn = function (x) {
-        for (var i = 0; i < model.getSize(); i++)
+        for (let i = 0; i < model.getSize(); i++)
             this.highlightCell(x, i);
     };
 
     this.highlightCellGroup = function (cellGroup) {
-        var groups = model.getCellGroups();
-        for (var y = 0; y < model.getSize(); y++)
-            for (var x = 0; x < model.getSize(); x++)
+        let groups = model.getCellGroups();
+        for (let y = 0; y < model.getSize(); y++)
+            for (let x = 0; x < model.getSize(); x++)
                 if (groups[x][y] === cellGroup)
                     this.highlightCell(x, y);
     };
 
     this.removeHighlights = function () {
-        for (var i = 0; i < gridCells.length; i++)
+        for (let i = 0; i < gridCells.length; i++)
             gridCells[i].style.backgroundColor = "transparent";
     };
 
@@ -235,13 +235,13 @@ function View() {
     };
 
     this.setGridPress = function () {
-        var f = function (i) {
+        let f = function (i) {
             activeCell = i;
-            view.removeHighlights();
-            view.highlightCell(i % view.getGameSize(), Math.floor(i / view.getGameSize()));
+            //view.removeHighlights();
+            //view.highlightCell(i % view.getGameSize(), Math.floor(i / view.getGameSize()));
         };
 
-        for (var i = 0; i < gridCells.length; i++) {
+        for (let i = 0; i < gridCells.length; i++) {
             gridCells[i].addEventListener("click", f.bind(this, i));
         }
     };
@@ -254,7 +254,7 @@ function View() {
 
     this.keyboardNumber = function (n) {
         if (activeCell !== undefined && n <= gameSize) {
-            var x = activeCell % view.getGameSize(),
+            let x = activeCell % view.getGameSize(),
                 y = Math.floor(activeCell / view.getGameSize());
             if (activeMode === 0)
                 model.setNumber(x, y, n * 1);
@@ -289,7 +289,26 @@ function View() {
         next.disabled = step === solver.getStepCount();
     };
 
+// Sets step explanation and if it's a complex exp - parses and setups it
     this.setStepExplanation = function (stepName_) {
-        stepName.innerText = stepName_;
+        if (Array.isArray(stepName_)) {
+            let g = "",
+                r = "",
+                o = "";
+            for (let i = 0; i < stepName_.length; i++) {
+                switch (stepName_[i][1]) {
+                    case(onlyOptionCol):
+                        g += "<button class=\"onlyOp\">" + stepName_[i][2][2] + "</button>";
+                        break;
+                    case(restrictedNumCol):
+                        r += "<button class=\"numRest\">" + stepName_[i][2][2] + "</button>";
+                        break;
+                    case(_restrictedNumCol):
+                        o += "<button class=\"_numRest\">" + stepName_[i][2][2] + "</button>";
+                }
+            }
+            stepName.innerHTML = (g !== "" ? onlyOption + "<br>" + g + "<hr>" : "") + (r !== "" ? restrictedNum + "<br>" + r + "<hr>" : "") + (o !== "" ? _restrictedNum + "<br>" + o : "");
+        } else
+            stepName.innerText = stepName_;
     };
 }

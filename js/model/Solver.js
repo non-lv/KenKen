@@ -15,7 +15,8 @@ function Solver() {
         currentStep = 0;
 
     var rowNums = [],
-        colNums = [];
+        colNums = [],
+        numsFlow = [];
 
     var cells = [];
 
@@ -37,6 +38,8 @@ function Solver() {
                 steps.push([[[cell[0], cell[1], groups[i][1]]]]);
                 stepInfo.push([givenNo, [[cell[0], cell[1]]]]);
                 this.nextStep();
+                this.updateRowNums(cell[1], groups[i][1], [cell[0]]);
+                this.updateColNums(cell[0], groups[i][1], [cell[1]]);
             }
         }
 
@@ -46,7 +49,7 @@ function Solver() {
 
         this.reduceSteps();
 
-        let adv = new AdvancedExp(stepInfo, steps);
+        let adv = new AdvancedExp(stepInfo, steps, numsFlow);
         adv.advance();
     };
 
@@ -63,7 +66,7 @@ function Solver() {
             pair_limit = 2;
 
         // Removes cells with numbers in them and updates their details
-        for (let i = cells.length - 1; i >= 0; i--)
+        for (let i = cells.length - 1; i--;)
             if (this.isCellNumber(cells[i]))
                 cells.splice(i, 1);
             else cells[i][2] = model.getDetails(cells[i][0], cells[i][1]);
@@ -595,8 +598,13 @@ function Solver() {
 
 // Update rowNums
     this.updateRowNums = function (row, num, owners) {
-        if (rowNums[row][num] === undefined || owners.length < rowNums[row][num].length)
+        if (rowNums[row][num] === undefined || owners.length < rowNums[row][num].length) {
             rowNums[row][num] = owners;
+            let s = currentStep - 1;
+            if (numsFlow[s] === undefined)
+                numsFlow[s] = [[], []];
+            numsFlow[s][0].push([row, num, owners]);
+        }
 
         let details,
             updates = [];
@@ -613,8 +621,13 @@ function Solver() {
 
 // Update colNums
     this.updateColNums = function (col, num, owners) {
-        if (colNums[col][num] === undefined || owners.length < colNums[col][num].length)
+        if (colNums[col][num] === undefined || owners.length < colNums[col][num].length) {
             colNums[col][num] = owners;
+            let s = currentStep - 1;
+            if (numsFlow[s] === undefined)
+                numsFlow[s] = [[], []];
+            numsFlow[s][1].push([col, num, owners]);
+        }
 
         let details,
             updates = [];
@@ -672,8 +685,16 @@ function Solver() {
                     stepInfo[i - 1][2] = stepInfo[i - 1][2].concat(stepInfo[i][2]);
                 }
 
+                if (numsFlow[i] !== undefined) {
+                    if (numsFlow[i - 1] === undefined)
+                        numsFlow[i - 1] = [[], []];
+                    numsFlow[i - 1][0] = numsFlow[i - 1][0].concat(numsFlow[i][0]);
+                    numsFlow[i - 1][1] = numsFlow[i - 1][1].concat(numsFlow[i][1]);
+                }
+
                 steps.splice(i, 1);
                 stepInfo.splice(i, 1);
+                numsFlow.splice(i, 1);
                 i--;
             } else {
                 chain = false;

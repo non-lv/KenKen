@@ -62,7 +62,7 @@ function Controller() {
 
     this.keyPressListener = function () {
         $("#KenKenGrid").keyup(function (e) {
-            var number = RegExp("^[1-9]$");
+            let number = RegExp("^[1-9]$");
             if (number.test(e.key)) {
                 view.keyboardNumber(e.key);
             } else if (e.key === "Backspace" || e.key === "Delete") {
@@ -76,7 +76,7 @@ function Controller() {
     };
 
     this.buttonListener = function () {
-        var buttons = $(".mButton");
+        let buttons = $(".mButton");
         buttons[0].addEventListener("click", function () {
             model.initSolver();
             view.solve();
@@ -97,19 +97,6 @@ function Controller() {
         buttons[4].addEventListener("click", function () {
             view.setActiveMode(1);
         });
-        // $(".mButton").click(function () {
-        //     if (this.innerHTML === "Solve") {
-        //         model.initSolver();
-        //         view.solve();
-        //     } else if (this.id === "next") {
-        //         solver.nextStep();
-        //     } else if (this.id === "prev") {
-        //         solver.previousStep();
-        //     } else if (this.innerHTML === "Normal") {
-        //         view.setActiveMode(0);
-        //     } else
-        //         view.setActiveMode(1);
-        // });
     };
 }
 

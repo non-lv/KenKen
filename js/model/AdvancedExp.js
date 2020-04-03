@@ -1,19 +1,45 @@
-function AdvancedExp(stepInfo, steps) {
-    let info = stepInfo;
+const onlyOption = "Only Possible Option",
+    onlyOptionCol = "#2ECC66",
+    restrictedNum = "Number Restricted",
+    restrictedNumCol = "#F02B2B",
+    _restrictedNum = "Number Eliminated due to above Restrictions",
+    _restrictedNumCol = "#EC952E";
+
+function AdvancedExp(stepInfo, steps, rFlow) {
+    let info = stepInfo,
+        flow = rFlow,
+        resRow = [],
+        resCol = [];
+
+    let step;
+
+    this.initRes = function () {
+        for (let i = 0; i < model.getSize(); i++) {
+            resRow[i] = [];
+            resCol[i] = [];
+        }
+    };
 
     this.advance = function () {
-        for (let i = 0; i < info.length; i++) {
-            switch (info[i][0]) {
+        this.initRes();
+
+        for (step = 0; step < info.length; step++) {
+            switch (info[step][0]) {
                 case(addedNotes):
-                    this.addedNotes(steps[i][1]);
+                    this.addedNotes(steps[step][1]);
                     break;
                 case(updatedOptions):
-                    this.updatedNotes(steps[i][1]);
+                    this.updatedNotes(steps[step][1]);
                     break;
             }
+            this.flowNext(step);
             solver.nextStep();
+
+            console.log(step);
+            console.log(JSON.parse(JSON.stringify(resRow)));
         }
         solver.resetSteps();
+        console.log(stepInfo);
     };
 
     this.addedNotes = function (notes) {
@@ -41,8 +67,16 @@ function AdvancedExp(stepInfo, steps) {
         }
         let difference = this.noteDifference(notes, base);
 
-        if (difference.length > 0)
-            console.log(difference);
+        if (difference.length > 0) {
+            stepInfo[step][0] = [];
+            for (let i = 0; i < notes.length; i++) {
+                stepInfo[step][0].push([onlyOption + (notes[i][2].length > 1 ? "s" : ""), onlyOptionCol, notes[i].slice()]);
+            }
+            // console.log(step);
+            // console.log(difference);
+            // console.log(JSON.parse(JSON.stringify(resCol)));
+            this.restrictionSplit(difference);
+        }
         // Get cells in the note range
         // Calc note diff
         // Show restrictions for difference
@@ -72,6 +106,35 @@ function AdvancedExp(stepInfo, steps) {
             if (notes_II[i][2].length === 0) notes_II.splice(i, 1);
 
         return notes_II;
+    };
+
+// Split notes into restricted and rest
+    this.restrictionSplit = function (notes) {
+        for (let i = 0; i < notes.length; i++) {
+            let x = notes[i][0], y = notes[i][1];
+            for (let c = 0; c < notes[i][2].length; c++) {
+                let number = notes[i][2][c];
+                if (!this.isAvailable(number, x, y)) {
+                    // console.log(step + ": " + x + " " + y + " " + number);
+                    let restrictors = [];
+                    if (resRow[y][number] !== undefined && !resRow[y][number].includes(x))
+                        for (let t = 0; t < resRow[y][number].length; t++)
+                            restrictors.push([resRow[y][number][t], y]);
+                    else
+                        for (let t = 0; t < resCol[x][number].length; t++)
+                            restrictors.push([x, resCol[x][number][t]]);
+                    stepInfo[step][0].push([restrictedNum, restrictedNumCol, [x, y, number], restrictors]);
+                } else {
+                    stepInfo[step][0].push([_restrictedNum, _restrictedNumCol, [x, y, number]]);
+                    // console.log(step + " r: " + x + " " + y + " " + number);
+                }
+            }
+        }
+    };
+
+// Checks if the number is not taken in that row / column
+    this.isAvailable = function (number, x, y) {
+        return (resRow[y][number] === undefined || resRow[y][number].includes(x)) && (resCol[x][number] === undefined || resCol[x][number].includes(y));
     };
 
     this.basicNotes = function (cells) {
@@ -282,4 +345,23 @@ function AdvancedExp(stepInfo, steps) {
 
         // Not a loop, supports only 2 cells at the time
     };
+
+    this.flowNext = function (i) {
+        if (flow[i] !== undefined) {
+            // Update Row Restrictions
+            for (let t = 0; t < flow[i][0].length; t++) {
+                let data = flow[i][0][t];
+                if (resRow[data[0]] === undefined)
+                    resRow[data[0]] = [];
+                resRow[data[0]][data[1]] = data[2];
+            }
+            // Update Col Restrictions
+            for (let t = 0; t < flow[i][1].length; t++) {
+                let data = flow[i][1][t];
+                if (resCol[data[0]] === undefined)
+                    resCol[data[0]] = [];
+                resCol[data[0]][data[1]] = data[2];
+            }
+        }
+    }
 }

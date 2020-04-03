@@ -93,3 +93,34 @@
     font-size: 1.5em;
     font-family: sans-serif;
 }
+
+.onlyOp, .numRest, ._numRest {
+    display: inline-block;
+    left: 50%;
+    margin: 0 .2vw 0 .2vw;
+    padding: 2px 0 2px 0;
+    width: auto;
+    min-width: 35px;
+    border: gray 2px solid;
+    border-radius: 5px;
+    font-size: 1em;
+    font-family: sans-serif;
+}
+
+.onlyOp{
+    background-color: #2ECC66;
+    color: #001100;
+    border-color: #005500;
+}
+
+.numRest{
+    background-color: #F02B2B;
+    color: #000000;
+    border-color: #551717;
+}
+
+._numRest{
+    background-color: #EC952E;
+    color: #7B1D1D;
+    border-color: #FFDF64;
+}
