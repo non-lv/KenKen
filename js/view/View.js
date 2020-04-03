@@ -17,6 +17,10 @@ function View() {
         currentStep = $("#current_step")[0],
         stepName = $("#stepName")[0];
 
+    // Temp highlight
+    var tempLight = [],
+        _stepName = [];
+
     this.init = function () {
         this.grid(model.getSize());
         this.setHints();
@@ -144,7 +148,7 @@ function View() {
     };
 
     this.clearCell = function (x, y) {
-        var cell = gridCells[y * model.getSize() + x].getElementsByClassName("number")[0],
+        let cell = gridCells[y * model.getSize() + x].getElementsByClassName("number")[0],
             note = gridCells[y * model.getSize() + x].getElementsByClassName("note")[0];
         if (cell !== undefined)
             gridCells[y * model.getSize() + x].removeChild(cell);
@@ -153,13 +157,13 @@ function View() {
     };
 
     this.setNote = function (x, y, number) {
-        var cell = gridCells[y * model.getSize() + x].getElementsByClassName("note")[0];
+        let cell = gridCells[y * model.getSize() + x].getElementsByClassName("note")[0];
         if (cell === undefined) {
             gridCells[y * model.getSize() + x].innerHTML += "<div class='note'>" + number + "</div>";
             return;
         }
-        var note = cell.innerText;
-        for (var i = 0; i < note.length; i++) {
+        let note = cell.innerText;
+        for (let i = 0; i < note.length; i++) {
             if (note.slice(i, i + 1) * 1 === number) {
                 note = note.slice(0, i) + note.slice(i + 1);
                 break;
@@ -291,6 +295,8 @@ function View() {
 
 // Sets step explanation and if it's a complex exp - parses and setups it
     this.setStepExplanation = function (stepName_) {
+        _stepName = stepName_;
+        tempLight = [];
         if (Array.isArray(stepName_)) {
             let g = "",
                 r = "",
@@ -298,13 +304,13 @@ function View() {
             for (let i = 0; i < stepName_.length; i++) {
                 switch (stepName_[i][1]) {
                     case(onlyOptionCol):
-                        g += "<button class=\"onlyOp\" onclick=''>" + stepName_[i][2][2] + "</button>";
+                        g += "<button class=\"onlyOp\" onclick='view.tempAssistLight(" + i + ")'>" + stepName_[i][2][2] + "</button>";
                         break;
                     case(restrictedNumCol):
-                        r += "<button class=\"numRest\">" + stepName_[i][2][2] + "</button>";
+                        r += "<button class=\"numRest\" onclick='view.tempAssistLight(" + i + ")'>" + stepName_[i][2][2] + "</button>";
                         break;
                     case(_restrictedNumCol):
-                        o += "<button class=\"_numRest\">" + stepName_[i][2][2] + "</button>";
+                        o += "<button class=\"_numRest\" onclick='view.tempAssistLight(" + i + ")'>" + stepName_[i][2][2] + "</button>";
                 }
             }
             stepName.innerHTML = (g !== "" ? onlyOption + "<br>" + g + "<hr>" : "") + (r !== "" ? restrictedNum + "<br>" + r + "<hr>" : "") + (o !== "" ? _restrictedNum + "<br>" + o : "");
@@ -312,7 +318,23 @@ function View() {
             stepName.innerText = stepName_;
     };
 
-    this.tempHighlight = function () {
+    this.tempAssistLight = function (id) {
+        this.removeTempHighlights();
+        let temp = _stepName[id];
+        this.tempHighlight(temp[2][0], temp[2][1], "#f53737");
+        if (temp[3] !== undefined)
+            for (let i = 0; i < temp[3].length; i++)
+                this.tempHighlight(temp[3][i][0], temp[3][i][1], "#2e98ec");
+    };
 
+    this.tempHighlight = function (x, y, color) {
+        tempLight.push([y * model.getSize() + x, gridCells[y * model.getSize() + x].style.backgroundColor]);
+        gridCells[y * model.getSize() + x].style.backgroundColor = color;
+    };
+
+    this.removeTempHighlights = function () {
+        for (let i = 0; i < tempLight.length; i++)
+            gridCells[tempLight[i][0]].style.backgroundColor = tempLight[i][1];
+        tempLight = [];
     };
 }

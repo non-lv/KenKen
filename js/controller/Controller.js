@@ -58,6 +58,7 @@ function Controller() {
 
         controller.keyPressListener();
         controller.buttonListener();
+        controller.cleaner();
     };
 
     this.keyPressListener = function () {
@@ -96,6 +97,12 @@ function Controller() {
 
         buttons[4].addEventListener("click", function () {
             view.setActiveMode(1);
+        });
+    };
+
+    this.cleaner = function () {
+        $(document).click(function () {
+            //view.removeTempHighlights();
         });
     };
 }
