@@ -16,6 +16,7 @@ function Solver() {
         steps.push([[]]);
         steps.push([[]]);
         steps.push([[]]);
+        steps.push([[]]);
 
         stepInfo.push(["Each number has to be unique in its respective row / column.", [[0, 0], [2, 0]], [[1, 0]]]);
         stepInfo.push(["Cells are divided into cages, each with its respective mathematical function."]);
@@ -23,6 +24,7 @@ function Solver() {
         stepInfo.push(["For cages with addition, just add all the numbers to gain the one displayed in the corner.", [[0, 0], [1, 0], [0, 1]]]);
         stepInfo.push(["Multiplication - Multiply all numbers.", [[2, 0], [2, 1], [2, 2]]]);
         stepInfo.push(["Division - Divide the largest number by the rest.", [[0, 2], [1, 2]]]);
+        stepInfo.push(["Now lets look at a solution of a bit more difficult puzzle!"]);
     };
 
 // Advances solution by a Step
@@ -74,6 +76,10 @@ function Solver() {
         for (; currentStep > 0; this.previousStep()) ;
     };
 
+    this.solved = function () {
+        return currentStep === steps.length;
+    };
+
     this.getStepCount = function () {
         return steps.length;
     };
@@ -84,7 +90,7 @@ function Solver() {
         if (currentStep === 0)
             view.setStepExplanation("");
         else if (currentStep === steps.length)
-            view.setStepExplanation("Now lets look at a solution of a bit more difficult puzzle!");
+            view.setStepExplanation("");
         else {
             let si = stepInfo[currentStep - 1];
             view.setStepExplanation(si[0]);

@@ -15,7 +15,6 @@ function Controller() {
         view.solve();
     };
 
-
     this.buttonListener = function () {
         let buttons = $(".mButton");
         buttons[0].addEventListener("click", function () {
@@ -29,6 +28,8 @@ function Controller() {
 
         buttons[2].addEventListener("click", function () {
             solver.nextStep();
+            if(solver.solved())
+                window.location.replace("example.html");
         });
 
         buttons[3].addEventListener("click", function () {

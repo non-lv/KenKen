@@ -27,7 +27,10 @@ function Controller() {
         });
 
         buttons[2].addEventListener("click", function () {
+            if(model.isFilled() && model.isSolved())
+                window.location.replace("userSolve.html");
             solver.nextStep();
+            $("#next")[0].disabled = false;
         });
 
         buttons[3].addEventListener("click", function () {
