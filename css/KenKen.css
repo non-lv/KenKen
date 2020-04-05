@@ -127,3 +127,21 @@ body{
     color: #7B1D1D;
     border-color: #FFDF64;
 }
+
+.onlyOp:hover{
+    background-color: #71ef4d;
+    color: #001100;
+    border-color: #074234;
+}
+
+.numRest:hover{
+    background-color: #f06a6d;
+    color: #000000;
+    border-color: #8d2424;
+}
+
+._numRest:hover{
+    background-color: #a15829;
+    color: #7B1D1D;
+    border-color: #ab8d4d;
+}
