@@ -7,9 +7,8 @@ const givenNo = "Given Number",
     hiddenGroup = "Hidden Number(s) in a ";
 
 function Solver() {
-// Steps format [numberStep, [x, y, number]]
-//              [numberStep, [[x, y, [notes]]]]
-// New format [[[x, y, number], ...], [[x, y, [notes]], ...]]
+// steps format [[[x, y, number], ...], [[x, y, [notes]], ...]]
+// stepInfo format ["explanation", [[x, y]...], [[x, y]...]]
     var steps = [],
         stepInfo = [],
         currentStep = 0;

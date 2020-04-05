@@ -44,15 +44,15 @@ function View() {
     };
 
     this.setHints = function () {
-        var cellGroups = model.getCellGroups(),
+        let cellGroups = model.getCellGroups(),
             groups = model.getGroups(),
             size = model.getSize();
 
-        var groupIndex = 0;
-        for (var y = 0; y < size; y++) {
-            for (var x = 0; x < size; x++) {
+        let groupIndex = 0;
+        for (let y = 0; y < size; y++) {
+            for (let x = 0; x < size; x++) {
                 if (groupIndex === cellGroups[x][y]) {
-                    var hint = groups[groupIndex][1];
+                    let hint = groups[groupIndex][1];
                     switch (groups[groupIndex][0]) {
                         case(1):
                             hint += "+";
@@ -91,12 +91,12 @@ function View() {
 
         gameSize = size;
 
-        for (var i = 0; i < size; i++) {
+        for (let i = 0; i < size; i++) {
             grid.append("<div class='gridRow'></div>");
         }
 
         $(".gridRow").each(function () {
-            for (var i = 0; i < size; i++) {
+            for (let i = 0; i < size; i++) {
                 $(this).append("<div class='gridCell'></div>");
             }
         });
@@ -117,16 +117,14 @@ function View() {
     };
 
     this.setNumber = function (x, y, number) {
-        var cell = gridCells[y * model.getSize() + x].getElementsByClassName("number")[0],
+        let cell = gridCells[y * model.getSize() + x].getElementsByClassName("number")[0],
             note = gridCells[y * model.getSize() + x].getElementsByClassName("note")[0];
         if (note !== undefined)
             note.style.display = "none";
 
-        if (cell === undefined) {
+        if (cell === undefined)
             gridCells[y * model.getSize() + x].innerHTML += "<div class='number'>" + number + "</div>";
-            return;
-        }
-        if (cell.innerText * 1 === number)
+        else if (cell.innerText * 1 === number)
             this.removeNumber(x, y);
         else
             cell.innerText = number;
@@ -137,7 +135,7 @@ function View() {
     };
 
     this.removeNumber = function (x, y) {
-        var cell = gridCells[y * model.getSize() + x].getElementsByClassName("number")[0],
+        let cell = gridCells[y * model.getSize() + x].getElementsByClassName("number")[0],
             note = gridCells[y * model.getSize() + x].getElementsByClassName("note")[0];
 
         if (cell !== undefined) {
@@ -306,13 +304,13 @@ function View() {
             for (let i = 0; i < stepName_.length; i++) {
                 switch (stepName_[i][1]) {
                     case(onlyOptionCol):
-                        g += "<button class=\"onlyOp\" onclick='view.tempAssistLight(" + i + ")'>" + stepName_[i][2][2] + "</button>";
+                        g += "<button class=\"onlyOp\" onclick='view.tempAssistLite(" + i + ")'>" + stepName_[i][2][2] + "</button>";
                         break;
                     case(restrictedNumCol):
-                        r += "<button class=\"numRest\" onclick='view.tempAssistLight(" + i + ")'>" + stepName_[i][2][2] + "</button>";
+                        r += "<button class=\"numRest\" onclick='view.tempAssistLite(" + i + ")'>" + stepName_[i][2][2] + "</button>";
                         break;
                     case(_restrictedNumCol):
-                        o += "<button class=\"_numRest\" onclick='view.tempAssistLight(" + i + ")'>" + stepName_[i][2][2] + "</button>";
+                        o += "<button class=\"_numRest\" onclick='view.tempAssistLite(" + i + ")'>" + stepName_[i][2][2] + "</button>";
                 }
             }
             stepName.innerHTML = (g !== "" ? onlyOption + "<br>" + g + "<hr>" : "") + (r !== "" ? restrictedNum + "<br>" + r + "<hr>" : "") + (o !== "" ? _restrictedNum + "<br>" + o : "");
@@ -320,7 +318,7 @@ function View() {
             stepName.innerText = stepName_;
     };
 
-    this.tempAssistLight = function (id) {
+    this.tempAssistLite = function (id) {
         this.removeTempHighlights();
         let temp = _stepName[id];
         this.tempHighlight(temp[2][0], temp[2][1], "#f53737");

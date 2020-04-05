@@ -35,24 +35,19 @@ function AdvancedExp(stepInfo, steps, rFlow) {
             this.flowNext(step);
             solver.nextStep();
 
-            console.log(step);
-            console.log(JSON.parse(JSON.stringify(resRow)));
         }
         solver.resetSteps();
-        console.log(stepInfo);
     };
 
     this.addedNotes = function (notes) {
         let group = model.findCellsInGroup(model.getCellGroups()[notes[0][0]][notes[0][1]]);
+        // Get cells in the note range
+        // Calc note diff
+        // Show restrictions for difference
+        // Explain rest of difference as a result of the other restrictions / math sign
+
         // Convert notes to proper format
         for (let i = 0; i < group.length; i++)
-            // if (!Array.isArray(group[i][2])) {
-            //     let num = group[i][2];
-            //     group[i][2] = [];
-            //     for (let t = 1; t <= model.getSize(); t++)
-            //         group[i][2][t] = num === t ? 0 : false;
-            // }
-            // else
             for (let t = 1; t <= model.getSize(); t++)
                 group[i][2][t] = 0;
 
@@ -72,15 +67,8 @@ function AdvancedExp(stepInfo, steps, rFlow) {
             for (let i = 0; i < notes.length; i++) {
                 stepInfo[step][0].push([onlyOption + (notes[i][2].length > 1 ? "s" : ""), onlyOptionCol, notes[i].slice()]);
             }
-            // console.log(step);
-            // console.log(difference);
-            // console.log(JSON.parse(JSON.stringify(resCol)));
             this.restrictionSplit(difference);
         }
-        // Get cells in the note range
-        // Calc note diff
-        // Show restrictions for difference
-        // Explain rest of difference as a result of the other restrictions / math sign
     };
 
     this.updatedNotes = function () {
@@ -115,7 +103,6 @@ function AdvancedExp(stepInfo, steps, rFlow) {
             for (let c = 0; c < notes[i][2].length; c++) {
                 let number = notes[i][2][c];
                 if (!this.isAvailable(number, x, y)) {
-                    // console.log(step + ": " + x + " " + y + " " + number);
                     let restrictors = [];
                     if (resRow[y][number] !== undefined && !resRow[y][number].includes(x))
                         for (let t = 0; t < resRow[y][number].length; t++)
@@ -126,7 +113,6 @@ function AdvancedExp(stepInfo, steps, rFlow) {
                     stepInfo[step][0].push([restrictedNum, restrictedNumCol, [x, y, number], restrictors]);
                 } else {
                     stepInfo[step][0].push([_restrictedNum, _restrictedNumCol, [x, y, number]]);
-                    // console.log(step + " r: " + x + " " + y + " " + number);
                 }
             }
         }
